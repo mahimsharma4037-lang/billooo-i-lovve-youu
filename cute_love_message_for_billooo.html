@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Cutest Billooo 🎀✨</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Fredoka & Dancing Script -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Tone.js for Sound Effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pastelPink: '#FFD1DC',
+                        blushPink: '#FFB6C1',
+                        lavender: '#E6E6FA',
+                        cream: '#FFFDD0',
+                        roseGold: '#B76E79',
+                        softPurple: '#D8BFD8',
+                        deepPink: '#FF69B4',
+                    },
+                    fontFamily: {
+                        fredoka: ['Fredoka', 'sans-serif'],
+                        cursive: ['Dancing Script', 'cursive'],
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'bounce-slow': 'bounce 2s infinite',
+                        'pulse-glow': 'pulseGlow 2s infinite',
+                        'wiggle': 'wiggle 1s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-12px)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 15px rgba(255, 182, 193, 0.8)' },
+                            '50%': { boxShadow: '0 0 30px rgba(255, 105, 180, 1)' },
+                        },
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-3deg)' },
+                            '50%': { transform: 'rotate(3deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #FFFDD0 0%, #FFD1DC 50%, #E6E6FA 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        /* Floating particles canvas */
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Smooth page transition styles */
+        .page {
+            display: none;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            position: relative;
+            z-index: 10;
+        }
+
+        .page.active {
+            display: flex;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Card glassmorphism effect */
+        .cute-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            border: 3px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 20px 40px rgba(255, 182, 193, 0.4);
+        }
+
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFD1DC;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FF69B4;
+            border-radius: 10px;
+        }
+
+        /* Love Letter Style */
+        .love-letter {
+            background: linear-gradient(to bottom, #fffef0, #fff5f7);
+            border-left: 5px solid #FF69B4;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4 text-gray-800">
+
+    <!-- Background Canvas for Hearts & Sparkles -->
+    <canvas id="bgCanvas"></canvas>
+
+    <!-- Top Music & Sound Bar -->
+    <div class="fixed top-4 right-4 z-50 flex items-center gap-2 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-pink-200">
+        <button id="musicBtn" onclick="toggleAudio()" class="text-pink-500 hover:text-pink-600 transition text-lg flex items-center gap-2 font-semibold">
+            <i class="fa-solid fa-music animate-spin" style="animation-duration: 4s;"></i>
+            <span id="musicText" class="text-xs sm:text-sm">Play Cute Music</span>
+        </button>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="w-full max-w-md sm:max-w-xl my-auto">
+
+        <!-- PAGE 1: WELCOME PAGE -->
+        <div id="page1" class="page active flex-col items-center text-center cute-card rounded-3xl p-6 sm:p-8 my-6">
+            
+            <!-- Cute Header Badge -->
+            <div class="inline-block bg-pink-100 text-pink-600 font-bold px-4 py-1.5 rounded-full text-xs sm:text-sm mb-4 border border-pink-300 animate-bounce-slow">
+                ✨ A special surprise for you ✨
+            </div>
+
+            <h1 class="text-3xl sm:text-5xl font-bold text-pink-600 mb-3 tracking-wide leading-tight">
+                Welcome to my cutest billooo! 🎀✨
+            </h1>
+
+            <!-- Animated Cute SVG Sticker Greeting -->
+            <div class="my-6 relative cursor-pointer transform hover:scale-105 transition duration-300" onclick="playCuteSound()">
+                <div class="w-48 h-48 sm:w-56 sm:h-56 mx-auto relative flex items-center justify-center">
+                    <!-- SVG Cartoon Bear with Heart Floating Sticker -->
+                    <svg class="w-full h-full animate-float drop-shadow-xl" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Ears -->
+                        <circle cx="60" cy="55" r="28" fill="#F4A261" />
+                        <circle cx="60" cy="55" r="16" fill="#E76F51" />
+                        <circle cx="140" cy="55" r="28" fill="#F4A261" />
+                        <circle cx="140" cy="55" r="16" fill="#E76F51" />
+                        <!-- Head -->
+                        <circle cx="100" cy="100" r="60" fill="#E9C46A" />
+                        <!-- Eyes -->
+                        <ellipse cx="80" cy="90" rx="6" ry="8" fill="#264653" />
+                        <ellipse cx="120" cy="90" rx="6" ry="8" fill="#264653" />
+                        <!-- Eye Highlights -->
+                        <circle cx="78" cy="88" r="2" fill="white" />
+                        <circle cx="118" cy="88" r="2" fill="white" />
+                        <!-- Cheeks -->
+                        <ellipse cx="70" cy="105" rx="10" ry="6" fill="#F4A261" opacity="0.6" />
+                        <ellipse cx="130" cy="105" rx="10" ry="6" fill="#F4A261" opacity="0.6" />
+                        <!-- Snout -->
+                        <ellipse cx="100" cy="105" rx="16" ry="12" fill="white" />
+                        <ellipse cx="100" cy="98" rx="6" ry="4" fill="#264653" />
+                        <!-- Smile -->
+                        <path d="M 94 106 Q 100 112 106 106" stroke="#264653" stroke-width="3" stroke-linecap="round" fill="none" />
+                        <!-- Bow Tie -->
+                        <path d="M 85 145 Q 100 140 100 150 Q 100 140 115 145 Q 120 160 100 152 Q 80 160 85 145 Z" fill="#FF69B4" />
+                        <circle cx="100" cy="148" r="4" fill="#FF1493" />
+                    </svg>
+
+                    <!-- Animated Speech Bubble -->
+                    <div class="absolute -top-2 right-0 bg-white border-2 border-pink-400 text-pink-600 font-bold px-4 py-2 rounded-2xl rounded-bl-none shadow-md animate-wiggle text-base sm:text-lg">
+                        Hii! 💕
+                    </div>
+                </div>
+            </div>
+
+            <!-- Romantic Note -->
+            <p class="text-gray-700 text-base sm:text-lg mb-6 leading-relaxed font-medium">
+                I made this tiny little magical corner of the internet just for you, my precious sweet baby. Get ready for some warmth and pure affection! 🌸
+            </p>
+
+            <!-- Transition Button -->
+            <button onclick="goToPage2()" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-pink-400 via-rose-400 to-pink-500 hover:from-pink-500 hover:to-rose-600 text-white font-bold text-lg rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-pink-300/50 animate-pulse-glow flex items-center justify-center gap-3 mx-auto">
+                <span>Click here for a surprise</span>
+                <i class="fa-solid fa-envelope-open-text text-xl"></i>
+            </button>
+        </div>
+
+
+        <!-- PAGE 2: EMOTIONAL & LOVE PAGE -->
+        <div id="page2" class="page flex-col items-center text-center cute-card rounded-3xl p-6 sm:p-8 my-6">
+            
+            <!-- Soft Emotional Header -->
+            <h2 class="text-2xl sm:text-4xl font-bold text-pink-600 mb-2 leading-tight">
+                I am missing you a lot... 🥺💖
+            </h2>
+
+            <!-- Cute Emotional Hug SVG Sticker -->
+            <div class="my-4 relative cursor-pointer" onclick="triggerHearts(event)">
+                <div class="w-44 h-44 sm:w-52 sm:h-52 mx-auto relative flex items-center justify-center">
+                    <svg class="w-full h-full animate-float drop-shadow-lg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Sad/Longing Cute Cat SVG -->
+                        <ellipse cx="100" cy="110" rx="55" ry="50" fill="#FFE5EC" />
+                        <!-- Cat Ears -->
+                        <polygon points="50,75 35,35 75,55" fill="#FFE5EC" />
+                        <polygon points="53,70 42,42 70,57" fill="#FFB6C1" />
+                        <polygon points="150,75 165,35 125,55" fill="#FFE5EC" />
+                        <polygon points="147,70 158,42 130,57" fill="#FFB6C1" />
+                        <!-- Big Teary Eyes -->
+                        <circle cx="75" cy="100" r="12" fill="#4A4A4A" />
+                        <circle cx="125" cy="100" r="12" fill="#4A4A4A" />
+                        <circle cx="72" cy="96" r="4" fill="white" />
+                        <circle cx="122" cy="96" r="4" fill="white" />
+                        <circle cx="77" cy="102" r="2" fill="white" />
+                        <circle cx="127" cy="102" r="2" fill="white" />
+                        <!-- Tear Drops -->
+                        <path d="M 62 108 Q 60 118 63 120 Q 66 118 64 108 Z" fill="#70D6FF" opacity="0.9" />
+                        <!-- Nose and Mouth -->
+                        <polygon points="100,108 96,104 104,104" fill="#FF85A1" />
+                        <path d="M 94 113 Q 100 110 106 113" stroke="#4A4A4A" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                        <!-- Holding Heart -->
+                        <path d="M 100 120 C 100 120, 80 105, 70 120 C 60 135, 85 155, 100 165 C 115 155, 140 135, 130 120 C 120 105, 100 120, 100 120 Z" fill="#FF4D6D" />
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Sweet Emotional Love Letter -->
+            <div class="love-letter rounded-2xl p-5 mb-6 text-left border border-pink-100">
+                <p class="text-pink-500 font-cursive text-2xl font-bold mb-2">My Dearest Billooo,</p>
+                <p class="text-gray-700 text-sm sm:text-base leading-relaxed mb-3">
+                    Every second away from you feels like an eternity. I wish I could wrap my arms around you right now, hold you tight, and never let go. You bring so much light, warmth, and sweetness into my life! 🧸✨
+                </p>
+                <p class="text-gray-700 text-sm sm:text-base leading-relaxed">
+                    No matter how far apart we are, my heart is always right beside yours, beating just for you.
+                </p>
+            </div>
+
+            <!-- Interactive Buttons Section -->
+            <div class="w-full space-y-3 mb-8">
+                <!-- Virtual Hug Button -->
+                <button onclick="sendVirtualHug(event)" class="w-full py-3 px-4 bg-pink-100 hover:bg-pink-200 text-pink-700 font-bold rounded-2xl border-2 border-pink-300 transition-all duration-200 transform hover:scale-[1.02] flex items-center justify-center gap-2 shadow-sm">
+                    <span class="text-2xl">🫂</span>
+                    <span>Tap to send a virtual hug!</span>
+                </button>
+
+                <!-- Reasons Why You're My Favorite Human -->
+                <button onclick="showNextReason()" class="w-full py-3 px-4 bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold rounded-2xl border-2 border-purple-300 transition-all duration-200 transform hover:scale-[1.02] flex items-center justify-center gap-2 shadow-sm">
+                    <span class="text-2xl">✨</span>
+                    <span>Why you're my favorite human</span>
+                </button>
+
+                <!-- Reason Card (Hidden initially) -->
+                <div id="reasonBox" class="hidden p-4 bg-white/90 rounded-2xl border-2 border-dashed border-pink-300 text-pink-600 font-semibold text-sm sm:text-base animate-float">
+                    <p id="reasonText">Click the button above to discover love notes! 💌</p>
+                </div>
+            </div>
+
+            <!-- GRAND FINALE SECTION -->
+            <div class="w-full pt-6 border-t-2 border-dashed border-pink-200">
+                <div class="mb-4">
+                    <span class="text-xs uppercase tracking-widest text-pink-400 font-bold">The Ultimate Declaration</span>
+                </div>
+
+                <button onclick="triggerGrandFinale()" class="w-full py-4 bg-gradient-to-r from-red-400 via-pink-500 to-rose-500 hover:from-red-500 hover:to-rose-600 text-white font-extrabold text-xl rounded-2xl shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-3 animate-pulse-glow">
+                    <i class="fa-solid fa-heart text-2xl animate-bounce"></i>
+                    <span>PRESS FOR MY HEART</span>
+                    <i class="fa-solid fa-heart text-2xl animate-bounce"></i>
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- GRAND FINALE MODAL / OVERLAY -->
+    <div id="finaleModal" class="fixed inset-0 z-50 bg-pink-900/40 backdrop-blur-md hidden items-center justify-center p-4 transition-opacity duration-500">
+        <div class="cute-card bg-white/95 rounded-3xl p-8 max-w-lg w-full text-center shadow-2xl relative border-4 border-pink-300 transform transition-all scale-90" id="finaleContent">
+            
+            <button onclick="closeFinale()" class="absolute top-4 right-4 text-pink-400 hover:text-pink-600 text-2xl font-bold w-10 h-10 rounded-full bg-pink-50 flex items-center justify-center border border-pink-200">
+                ✕
+            </button>
+
+            <!-- Floating Hearts Container for Modal -->
+            <div class="text-6xl my-4 animate-bounce">
+                💖👑💖
+            </div>
+
+            <h3 class="font-cursive text-4xl sm:text-6xl font-extrabold text-pink-600 mb-4 tracking-wide leading-tight">
+                I Love You, Billooo!
+            </h3>
+
+            <p class="text-gray-700 text-base sm:text-xl font-medium mb-6 leading-relaxed">
+                You are my sun, my moon, and all my stars. Forever and always, my cutest little angel! 🌸✨💕
+            </p>
+
+            <div class="flex justify-center gap-4 my-4">
+                <div class="px-4 py-2 bg-pink-100 text-pink-600 rounded-full font-bold text-sm shadow-inner">
+                     Forever Yours
+                </div>
+                <div class="px-4 py-2 bg-purple-100 text-purple-600 rounded-full font-bold text-sm shadow-inner">
+                     Infinity & Beyond
+                </div>
+            </div>
+
+            <button onclick="triggerConfettiBurst(); playLoveTone();" class="mt-4 px-8 py-3 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-full shadow-lg transition-transform active:scale-95">
+                Send More Love Burst! 🎆
+            </button>
+        </div>
+    </div>
+
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- 1. Floating Particles Canvas ---
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const particles = [];
+        const particleTypes = ['💖', '🌸', '✨', '💕', '☁️', '🍬'];
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + Math.random() * 100;
+                this.size = Math.random() * 18 + 12;
+                this.speedY = Math.random() * 1.5 + 0.5;
+                this.speedX = Math.sin(Math.random() * Math.PI) * 0.8;
+                this.symbol = particleTypes[Math.floor(Math.random() * particleTypes.length)];
+                this.opacity = Math.random() * 0.7 + 0.3;
+                this.rotation = Math.random() * 360;
+                this.rotSpeed = (Math.random() - 0.5) * 2;
+            }
+
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                this.rotation += this.rotSpeed;
+                if (this.y < -30) {
+                    this.y = canvas.height + 20;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate((this.rotation * Math.PI) / 180);
+                ctx.globalAlpha = this.opacity;
+                ctx.font = `${this.size}px serif`;
+                ctx.fillText(this.symbol, 0, 0);
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < 30; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+
+        // --- 2. Audio & Sound FX (Tone.js) ---
+        let audioPlaying = false;
+        let synth;
+
+        function initSynth() {
+            if (!synth) {
+                synth = new Tone.PolySynth(Tone.Synth, {
+                    oscillator: { type: 'triangle' },
+                    envelope: { attack: 0.05, decay: 0.1, sustain: 0.3, release: 1 }
+                }).toDestination();
+                synth.volume.value = -12;
+            }
+        }
+
+        function playCuteSound() {
+            Tone.start();
+            initSynth();
+            const notes = ['C5', 'E5', 'G5', 'C6'];
+            notes.forEach((note, index) => {
+                synth.triggerAttackRelease(note, '8n', Tone.now() + index * 0.1);
+            });
+        }
+
+        function playLoveTone() {
+            Tone.start();
+            initSynth();
+            const now = Tone.now();
+            synth.triggerAttackRelease('E5', '4n', now);
+            synth.triggerAttackRelease('G5', '4n', now + 0.15);
+            synth.triggerAttackRelease('C6', '2n', now + 0.3);
+        }
+
+        // Ambient Melody Loop
+        let musicPattern;
+        function toggleAudio() {
+            Tone.start();
+            initSynth();
+            const btnText = document.getElementById('musicText');
+
+            if (!audioPlaying) {
+                audioPlaying = true;
+                btnText.innerText = "Pause Music";
+                
+                const melody = [
+                    { time: 0, note: 'C4' }, { time: '0:2', note: 'E4' }, { time: '0:3', note: 'G4' },
+                    { time: '1:0', note: 'A4' }, { time: '1:2', note: 'G4' },
+                    { time: '2:0', note: 'F4' }, { time: '2:2', note: 'A4' },
+                    { time: '3:0', note: 'G4' }, { time: '3:2', note: 'E4' }
+                ];
+
+                Tone.Transport.bpm.value = 85;
+                musicPattern = new Tone.Part((time, value) => {
+                    synth.triggerAttackRelease(value.note, '8n', time);
+                }, melody).start(0);
+
+                musicPattern.loop = true;
+                musicPattern.loopEnd = '4m';
+                Tone.Transport.start();
+            } else {
+                audioPlaying = false;
+                btnText.innerText = "Play Cute Music";
+                Tone.Transport.stop();
+            }
+        }
+
+
+        // --- 3. Page Navigation ---
+        function goToPage2() {
+            playCuteSound();
+            const p1 = document.getElementById('page1');
+            const p2 = document.getElementById('page2');
+
+            p1.classList.remove('active');
+            setTimeout(() => {
+                p1.style.display = 'none';
+                p2.style.display = 'flex';
+                setTimeout(() => p2.classList.add('active'), 50);
+            }, 500);
+
+            // Trigger burst of heart confetti on page transition
+            confetti({
+                particleCount: 40,
+                spread: 60,
+                origin: { y: 0.6 },
+                colors: ['#FFD1DC', '#FF69B4', '#E6E6FA']
+            });
+        }
+
+
+        // --- 4. Interactive Elements ---
+        const reasons = [
+            "Your smile brightens up my darkest days! ☀️",
+            "You have the softest and kindest heart ever 💕",
+            "The cute way you laugh at silly jokes 🤭",
+            "How safe and happy I feel whenever I talk to you 🧸",
+            "You make the world a thousand times sweeter 🌸",
+            "You are literally my favorite person in the entire universe ✨"
+        ];
+        let reasonIndex = 0;
+
+        function showNextReason() {
+            playCuteSound();
+            const box = document.getElementById('reasonBox');
+            const text = document.getElementById('reasonText');
+
+            box.classList.remove('hidden');
+            text.innerText = reasons[reasonIndex];
+            reasonIndex = (reasonIndex + 1) % reasons.length;
+
+            // Small pulse effect
+            box.classList.remove('animate-bounce');
+            void box.offsetWidth; // Trigger reflow
+            box.classList.add('animate-bounce');
+            setTimeout(() => box.classList.remove('animate-bounce'), 1000);
+        }
+
+        function sendVirtualHug(e) {
+            playCuteSound();
+            triggerHearts(e);
+
+            // Floating Hug Notification
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/90 border-2 border-pink-400 text-pink-600 text-lg font-bold px-6 py-3 rounded-full shadow-2xl z-50 animate-bounce pointer-events-none';
+            toast.innerHTML = '🫂 Warm Hug Received! ❤️';
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.transition = 'opacity 0.5s ease';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 500);
+            }, 1500);
+        }
+
+        function triggerHearts(e) {
+            const hearts = ['💖', '💕', '💗', '❤️', '🌸'];
+            for (let i = 0; i < 8; i++) {
+                const heart = document.createElement('div');
+                heart.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.position = 'fixed';
+                heart.style.left = (e.clientX || window.innerWidth / 2) + (Math.random() * 60 - 30) + 'px';
+                heart.style.top = (e.clientY || window.innerHeight / 2) + (Math.random() * 60 - 30) + 'px';
+                heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+                heart.style.pointerEvents = 'none';
+                heart.style.zIndex = '100';
+                heart.style.transition = 'all 1s ease-out';
+                document.body.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.style.transform = `translate(${(Math.random() - 0.5) * 100}px, -${Math.random() * 150 + 50}px) scale(1.5)`;
+                    heart.style.opacity = '0';
+                }, 20);
+
+                setTimeout(() => heart.remove(), 1050);
+            }
+        }
+
+
+        // --- 5. Grand Finale Popup ---
+        function triggerGrandFinale() {
+            playLoveTone();
+            triggerConfettiBurst();
+
+            const modal = document.getElementById('finaleModal');
+            const content = document.getElementById('finaleContent');
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            setTimeout(() => {
+                content.classList.remove('scale-90');
+                content.classList.add('scale-100');
+            }, 50);
+        }
+
+        function closeFinale() {
+            const modal = document.getElementById('finaleModal');
+            const content = document.getElementById('finaleContent');
+            
+            content.classList.remove('scale-100');
+            content.classList.add('scale-90');
+            setTimeout(() => {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function triggerConfettiBurst() {
+            const count = 200;
+            const defaults = {
+                origin: { y: 0.7 }
+            };
+
+            function fire(particleRatio, opts) {
+                confetti(Object.assign({}, defaults, opts, {
+                    particleCount: Math.floor(count * particleRatio)
+                }));
+            }
+
+            fire(0.25, {
+                spread: 26,
+                startVelocity: 55,
+                colors: ['#FF69B4', '#FFB6C1']
+            });
+            fire(0.2, {
+                spread: 60,
+                colors: ['#E6E6FA', '#FFFDD0']
+            });
+            fire(0.35, {
+                spread: 100,
+                decay: 0.91,
+                scalar: 0.8
+            });
+            fire(0.1, {
+                spread: 120,
+                startVelocity: 25,
+                decay: 0.92,
+                colors: ['#FF1493', '#FFD1DC']
+            });
+            fire(0.1, {
+                spread: 120,
+                startVelocity: 45,
+            });
+        }
+    </script>
+</body>
+</html>
